@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Xác nhận email";
+    Layout = "~/Views/Shared/_LayoutPageAccount.cshtml";
+}
+
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">Xác nhận email</h1>
+        </div>
+        <hr>
+        <div class="text-center">
+            Cảm ơn đã xác nhận email. Vui lòng @Html.ActionLink("click vào đây để đăng nhập", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        </div>
+        <hr />
+    </div>
+</div>

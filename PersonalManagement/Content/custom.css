@@ -1,0 +1,15 @@
+﻿
+
+    .top-link:hover {
+        background-color: #ffd11a;
+    }
+
+#registerLink:hover {
+    color: #33cc33;
+    font-weight: bold
+}
+
+#signinLink:hover {
+    color: #ff661a;
+    font-weight: bold
+}
