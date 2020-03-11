@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ using Microsoft.Owin.Security;
 using PersonalManagement.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace PersonalManagement
 {
@@ -37,7 +41,19 @@ namespace PersonalManagement
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your SMS service here to send a text message.
+            if (message==null)
+            {
+                return Task.FromResult(0);
+
+            }
+            TwilioClient.Init(Keys.SMSAccountIdentification, Keys.SMSAccountPassword);
+            var msg = MessageResource.Create(
+                        new PhoneNumber(message.Destination),
+                        from: new PhoneNumber(Keys.SMSAccountFrom),
+                        body: message.Body
+                    );
+            Trace.TraceInformation(msg.Sid);
+
             return Task.FromResult(0);
         }
     }
@@ -50,7 +66,7 @@ namespace PersonalManagement
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -91,7 +107,7 @@ namespace PersonalManagement
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;

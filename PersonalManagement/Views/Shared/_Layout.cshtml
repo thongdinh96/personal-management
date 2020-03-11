@@ -25,7 +25,6 @@
 
     <!-- Page Wrapper -->
     <div id="wrapper">
-        @RenderBody()
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -98,9 +97,8 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
+
+                    @RenderBody()
 
                 </div>
                 <!-- /.container-fluid -->
@@ -163,6 +161,8 @@
     <!-- Custom scripts for all pages-->
     @*<script src="js/sb-admin-2.min.js"></script>*@
     <script src="~/Scripts/sb-admin-2.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="~/Scripts/custom.js"></script>
 
     <!-- Page level plugins -->
     @*<script src="vendor/chart.js/Chart.min.js"></script>*@
