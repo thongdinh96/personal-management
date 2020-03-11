@@ -48,12 +48,13 @@ namespace PersonalManagement.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Địa chỉ email không được để trống")]
         [Display(Name = "Email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Địa chỉ email không đúng định dạng")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Mật khẩu không được để trống")]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải có độ dài ít nhất {2} kí tự", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -77,6 +78,10 @@ namespace PersonalManagement.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Số điện thoại không được để trống")]
+        [Phone(ErrorMessage = "Số điện thoại không đúng định dạng")]
+        [Display(Name = "PhoneNumber")]
+        public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         [StringLength(100, ErrorMessage = "Mật khẩu phải có độ dài ít nhất {2} kí tự", MinimumLength = 6)]
         [DataType(DataType.Password)]
