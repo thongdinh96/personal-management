@@ -78,10 +78,6 @@ namespace PersonalManagement.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Số điện thoại không được để trống")]
-        [Phone(ErrorMessage = "Số điện thoại không đúng định dạng")]
-        [Display(Name = "PhoneNumber")]
-        public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         [StringLength(100, ErrorMessage = "Mật khẩu phải có độ dài ít nhất {2} kí tự", MinimumLength = 6)]
         [DataType(DataType.Password)]

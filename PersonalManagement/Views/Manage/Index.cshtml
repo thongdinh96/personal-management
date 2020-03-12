@@ -39,12 +39,12 @@
 
         <dt>Số điện thoại:</dt>
         <dd>
-            @(Model.PhoneNumber ?? "None")
-            @if (Model.PhoneNumber != null)
+            @(Model.PhoneNumber ?? "Trống")
+            @if ( Model.PhoneNumber != null )
             {
                 <br />
                 <text>[&nbsp;&nbsp;@Html.ActionLink("Thay đổi", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                using ( Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }) )
                 {
                     @Html.AntiForgeryToken()
                     <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
@@ -52,7 +52,7 @@
             }
             else
             {
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Thêm số điện thoại", "AddPhoneNumber")</text>
+                <text>[&nbsp;&nbsp;@Html.ActionLink("Thêm số điện thoại", "AddPhoneNumber")&nbsp;&nbsp;]</text>
             }
         </dd>
 
