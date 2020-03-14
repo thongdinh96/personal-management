@@ -81,7 +81,7 @@
                     li.text(liVal)
                     ul.append(li)
                 });
-                $("#incoming-events").append(ul);
+                $($("#incoming-events").find("div.card-body")[0]).append(ul);
 
             },
                 function (err) { console.error("Execute error", err); });
@@ -104,7 +104,7 @@
                     data = data.replace("Humidity", "Độ ẩm")
                     data = data.replace("Wind", "Gió")
                     data = data.replace("Pressure", "Áp suất")
-                    $("#weather-con").append($(data))
+                    $($("#weather-con").find("div.card-body")[0]).append($(data))
                 }
             });
         }
