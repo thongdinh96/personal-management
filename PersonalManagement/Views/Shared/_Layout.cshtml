@@ -18,6 +18,7 @@
     <!-- Custom styles for this template-->
     <link href="~/Content/sb-admin-2.min.css" rel="stylesheet">
     <link href="~/Content/custom.css" rel="stylesheet">
+    <script src="~/Scripts/jquery.min.js"></script>
 
 </head>
 
@@ -40,10 +41,17 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item" id="homeLink">
+                <a class="nav-link" href="@Url.Action("index","home")">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item" id="youtubeLink">
+                <a class="nav-link" href="@Url.Action("GetYoutube","home")">
+                    <i class="fab fa-youtube-square"></i>
+                    <span>Thống kê youtube</span>
                 </a>
             </li>
 
@@ -148,8 +156,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="~/Scripts/jquery.min.js"></script>
     @*@Scripts.Render("~/bundles/jquery")*@
     @*<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
@@ -162,7 +168,6 @@
     @*<script src="js/sb-admin-2.min.js"></script>*@
     <script src="~/Scripts/sb-admin-2.min.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
-    <script src="~/Scripts/custom.js"></script>
 
     <!-- Page level plugins -->
     @*<script src="vendor/chart.js/Chart.min.js"></script>*@

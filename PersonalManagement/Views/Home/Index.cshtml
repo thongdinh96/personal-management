@@ -20,16 +20,21 @@
     </div>
 </div>
 <div class="row">
-    <div  class="card shadow mb-4 col-md-6">
+    <div class="card shadow mb-4 col-md-6">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Tình hình dịch Corona thế giới</h6>
         </div>
         <div class="card-body table-responsive">@Html.Raw(ViewBag.WorldCoronaTable)</div>
     </div>
-    <div  class="card shadow mb-4 col-md-6">
+    <div class="card shadow mb-4 col-md-6">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Tình hình dịch Corona Việt Nam</h6>
         </div>
-        <div class="card-body"></div>
+        <div class="card-body table-responsive">@Html.Raw(ViewBag.VietNamCoronaTable)</div>
     </div>
 </div>
+<script>
+    $("#homeLink").attr("class", "nav-item active")
+    $("#youtubeLink").attr("class", "nav-item")
+</script>
+<script src="~/Scripts/custom.js"></script>

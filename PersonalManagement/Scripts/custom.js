@@ -111,6 +111,7 @@
     });
     
     gapi.load("client:auth2", function () {
+
         gapi.auth2.init({ client_id: "755793331580-j80vi8bnrd2nivd0qobflrvubrsfhmre.apps.googleusercontent.com" }).then(authenticate).then(loadClient).then(execute);
     });
 })
