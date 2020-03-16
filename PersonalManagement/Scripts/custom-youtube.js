@@ -18,18 +18,40 @@
             "mine": true
         })
             .then(function (response) {
+                console.log(response);
                 // Handle the results here (response.result has the parsed body).
                 var subs = response.result.items;
+                const colCount = 6;
+                var i = 1;
+                var divRow;
                 $.each(subs, function (index, sub) {
+
+                    if (i == 1) {
+                        divRow = $("<div></div>");
+                        divRow.attr("class", "row");
+                    }
                     var channelId = sub.id;
                     var imgUrl = sub.snippet.thumbnails.medium.url;
                     var imgEle = $("<img>");
                     imgEle.attr("src", imgUrl);
+                    imgEle.attr("width", 240)
+                    imgEle.attr("height",240)
                     imgEle.attr("class", "card-img-top");
                     var divImg = $("<div></div>")
-                    divImg.attr("class", "card")
+                    divImg.attr("class", `card col-md-${12 / colCount}`)
+                    
                     divImg.append(imgEle)
-                    $("#youCon").append(divImg);
+                    var cardBody = $("<div></div")
+                    cardBody.attr("class", "card-body")
+                    var cardTitle = $("<h5></h5>")
+                    cardTitle.attr("class", "card-title").text(sub.snippet.title)
+                    cardBody.append(cardTitle)
+                    divImg.append(cardBody)
+                    divRow.append(divImg);
+                    i++;
+                    if (i == colCount+1) {
+                        $($(".container-fluid")[0]).append(divRow); i = 1;
+                    }
                 });
             },
                 function (err) { console.error("Execute error", err); });
