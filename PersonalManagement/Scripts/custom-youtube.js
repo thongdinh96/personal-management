@@ -11,6 +11,9 @@
             .then(function () { console.log("GAPI client loaded for API"); },
                 function (err) { console.error("Error loading GAPI client for API", err); });
     }
+    var divCarArr = []
+    const colCount = 6;
+
      function execute() {
         return gapi.client.youtube.subscriptions.list({
             "part": "snippet,contentDetails",
@@ -21,16 +24,10 @@
                 console.log(response);
                 // Handle the results here (response.result has the parsed body).
                 var subs = response.result.items;
-                const colCount = 6;
-                var i = 1;
-                var divRow;
-                
-                $.each(subs, function (index, sub) {
 
-                    if (i == 1) {
-                        divRow = $("<div></div>");
-                        divRow.attr("class", "row");
-                    }
+                $.each(subs,  function (index, sub) {
+
+                    
                     var channelId = sub.snippet.resourceId.channelId;
                     var imgUrl = sub.snippet.thumbnails.medium.url;
                     var imgEle = $("<img>");
@@ -53,11 +50,8 @@
                     executeChannel(channelId, cardBody, desPara)
                     
                     divImg.append(cardBody)
-                    divRow.append(divImg);
-                    i++;
-                    if (i == colCount + 1 || index==subs.length-1) {
-                        $($(".container-fluid")[0]).append(divRow); i = 1;
-                    }
+                    divCarArr.push(divImg)
+                    
                 });
             },
                 function (err) { console.error("Execute error", err); });
@@ -87,7 +81,35 @@
             },
                 function (err) { console.error("Execute error", err); });
     }
+    function sortCards() {
+        //divCarArr.sort((c1, c2) => {
+        //    var view1Str = $($(c1.find(".card-body")[0]).find("p")[1]).text()
+        //    var view2Str = $($(c2.find(".card-body")[0]).find("p")[1]).text()
+        //    var view1 = parseInt(view1Str.substr(view1Str.indexOf(": ") + 2).replace(".", ""))
+        //    var view2 = parseInt(view2Str.substr(view2Str.indexOf(": ") + 2).replace(".", ""))
+        //    if (view1 < view2) {
+        //        return 1;
+        //    } else if (view1 === view2) {
+        //        return 0;
+        //    }
+        //    return -1;
+        //});
+        var i = 1;
+        var divRow;
+
+        $.each(divCarArr, (index, card) => {
+            if (i == 1) {
+                divRow = $("<div></div>");
+                divRow.attr("class", "row");
+            }
+            divRow.append(card);
+            i++;
+            if (i == colCount + 1 || index == divCarArr.length - 1) {
+                $($(".container-fluid")[0]).append(divRow); i = 1;
+            }
+        })
+    }
     gapi.load("client:auth2", function () {
-        gapi.auth2.init({ client_id: "755793331580-j80vi8bnrd2nivd0qobflrvubrsfhmre.apps.googleusercontent.com" }).then(authenticate).then(loadClient).then(execute)
+        gapi.auth2.init({ client_id: "755793331580-j80vi8bnrd2nivd0qobflrvubrsfhmre.apps.googleusercontent.com" }).then(authenticate).then(loadClient).then(execute).then(sortCards)
     });
 });
