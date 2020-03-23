@@ -21,7 +21,6 @@
     <script src="~/Scripts/jquery.min.js"></script>
 
 </head>
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -98,7 +97,16 @@
             <!-- Main Content -->
             <div id="content">
                 @Html.Partial("_LoginPartial")
+                @if ( Session["EmailConfirmed"] != null && !bool.Parse(Session["EmailConfirmed"] + "") )
+                {
 
+                    <div class="alert alert-warning" role="alert">
+                        Email chưa được xác thực, vui lòng kiểm tra hộp mail và click vào link được gửi tới để xác thực email<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                }
 
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->

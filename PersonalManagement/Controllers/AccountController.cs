@@ -21,7 +21,7 @@ namespace PersonalManagement.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            UserManager = userManager;
+            UserManager = userManager;            
             SignInManager = signInManager;
         }
 
@@ -76,6 +76,8 @@ namespace PersonalManagement.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    var user=SignInManager.UserManager.FindByEmail(model.Email);
+                    Session["EmailConfirmed"] = user.EmailConfirmed;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -179,6 +181,7 @@ namespace PersonalManagement.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+            if ( result.Succeeded ) Session["EmailConfirmed"] = true;
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 

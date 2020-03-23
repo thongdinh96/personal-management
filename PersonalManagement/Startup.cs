@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using System.Web;
 
 [assembly: OwinStartupAttribute(typeof(PersonalManagement.Startup))]
 namespace PersonalManagement
@@ -9,6 +10,7 @@ namespace PersonalManagement
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+           
         }
     }
 }

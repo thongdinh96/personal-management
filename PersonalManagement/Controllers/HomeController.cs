@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PersonalManagement.Controllers
@@ -18,6 +20,13 @@ namespace PersonalManagement.Controllers
         static HttpClient client = new HttpClient();
         public async Task<ActionResult> Index()
         {
+            var sim=HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            if ( sim!=null )
+            {
+                var userName=User.Identity.Name;
+                var usr=await sim.FindByNameAsync(userName);
+                Session["EmailConfirmed"] = usr?.EmailConfirmed; 
+            }
             try
             {
                 HttpResponseMessage response = await client.GetAsync("https://www.worldometers.info/coronavirus/");
@@ -122,7 +131,7 @@ namespace PersonalManagement.Controllers
 
         private async Task<Dictionary<string, string>> GetDicMaTinh()
         {
-            Dictionary<string, string> res = new Dictionary<string, string>();
+            Dictionary<string, string> res = new Dictionary<string, string>();            
             HttpResponseMessage response = await client.GetAsync("https://ncov.moh.gov.vn/");
             if (response.IsSuccessStatusCode)
             {
