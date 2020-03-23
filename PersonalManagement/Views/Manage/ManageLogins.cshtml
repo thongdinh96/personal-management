@@ -1,19 +1,19 @@
 ﻿@model PersonalManagement.Models.ManageLoginsViewModel
 @using Microsoft.Owin.Security
 @{
-    ViewBag.Title = "Manage your external logins";
+    ViewBag.Title = "Quản lí các đăng nhập bên thứ 3";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (loginProviders.Count() == 0) {
+    if (loginProviders.Count() == 0)
+    {
         <div>
             <p>
-                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
-                for details on setting up this ASP.NET application to support logging in via external services.
+                Không có các service đăng nhập bên thứ 3 được cấu hình
             </p>
         </div>
     }
@@ -21,7 +21,7 @@
     {
         if (Model.CurrentLogins.Count > 0)
         {
-            <h4>Registered Logins</h4>
+            <h4>Các đăng nhập đã được đăng ký</h4>
             <table class="table">
                 <tbody>
                     @foreach (var account in Model.CurrentLogins)
@@ -37,7 +37,7 @@
                                         <div>
                                             @Html.Hidden("loginProvider", account.LoginProvider)
                                             @Html.Hidden("providerKey", account.ProviderKey)
-                                            <input type="submit" class="btn btn-default" value="Remove" title="Remove this @account.LoginProvider login from your account" />
+                                            <input type="submit" class="btn btn-danger" value="Remove" title="Xóa đăng nhập @account.LoginProvider này khỏi tài khoản của bạn" />
                                         </div>
                                     }
                                 }
@@ -53,16 +53,18 @@
         }
         if (Model.OtherLogins.Count > 0)
         {
+            <h4>Các đăng nhập khả dụng</h4>
+
             using (Html.BeginForm("LinkLogin", "Manage"))
             {
                 @Html.AntiForgeryToken()
                 <div id="socialLoginList">
-                <p>
-                    @foreach (AuthenticationDescription p in Model.OtherLogins)
-                    {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
-                    }
-                </p>
+                    <p>
+                        @foreach (AuthenticationDescription p in Model.OtherLogins)
+                        {
+                            <button title="Đăng nhập sử dụng tài khoản @p.Caption của bạn" type="submit" class="btn btn-@p.AuthenticationType.ToLower() btn-user btn-block col-md-3" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType"><i class="fab fa-@p.AuthenticationType.ToLower() fa-fw"></i> @p.AuthenticationType</button>
+                        }
+                    </p>
                 </div>
             }
         }

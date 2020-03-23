@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.Facebook;
 using Owin;
 using PersonalManagement.Models;
 
@@ -54,15 +55,15 @@ namespace PersonalManagement
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "503991193612019",
+               appSecret: "748b83dfa1ae273d3a042c49b164f5c3");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "755793331580-j80vi8bnrd2nivd0qobflrvubrsfhmre.apps.googleusercontent.com",
+                ClientSecret = "WV1ypVKIyu7a1u2mB_5J5KJU"
+            });
         }
     }
 }

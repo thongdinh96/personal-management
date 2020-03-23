@@ -4,49 +4,46 @@
 }
 
 
-<p class="text-success">@ViewBag.StatusMessage</p>
+@*<p class="text-success">@ViewBag.StatusMessage</p>*@
+@if (!string.IsNullOrEmpty(ViewBag.StatusMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @ViewBag.StatusMessage
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <div>
     <h4>Thay đổi cài đặt tài khoản của bạn</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Mật khẩu:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
+        @if (Model.HasPassword)
+        {
+            <dt>Mật khẩu:</dt>
+            <dd>
+                [
                 @Html.ActionLink("Thay đổi mật khẩu", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Tạo mật khẩu", "SetPassword")
-            }
-            ]
-        </dd>
+                ]
+            </dd>
+
+        }
         <dt>External Logins:</dt>
         <dd>
             @Model.Logins.Count [
             @Html.ActionLink("Manage", "ManageLogins") ]
         </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-
         <dt>Số điện thoại:</dt>
         <dd>
             @(Model.PhoneNumber ?? "Trống")
-            @if ( Model.PhoneNumber != null )
+            @if (Model.PhoneNumber != null)
             {
                 <br />
                 <text>[&nbsp;&nbsp;@Html.ActionLink("Thay đổi", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                using ( Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }) )
+                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                    <text>[<input type="submit" value="Xóa số điện thoại" class="btn-link" />]</text>
                 }
             }
             else
@@ -55,19 +52,15 @@
             }
         </dd>
 
-        <dt>Two-Factor Authentication:</dt>
+        <dt>Xác thực 2 bước:</dt>
         <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
             @if (Model.TwoFactor)
             {
                 using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
+                    <text>Kích hoạt
+                        <input type="submit" value="Bỏ kích hoạt" class="btn btn-link" />
                     </text>
                 }
             }
@@ -76,8 +69,8 @@
                 using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
+                    <text>Bỏ kích hoạt
+                        <input type="submit" value="Kích hoạt" class="btn btn-link" />
                     </text>
                 }
             }
