@@ -55,12 +55,11 @@ namespace PersonalManagement.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                message == ManageMessageId.ChangePasswordSuccess ? "Mật khẩu của bạn đã được thay đổi"
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Xác thực 2 bước của bạn đã được thiết lập"
+                : message == ManageMessageId.Error ? "Có lỗi xảy ra"
+                : message == ManageMessageId.AddPhoneSuccess ? "Số điện thoại của bạn đã được thêm"
+                : message == ManageMessageId.RemovePhoneSuccess ? "Số điện thoại của bạn đã được xóa"
                 : "";
 
             var userId = User.Identity.GetUserId();

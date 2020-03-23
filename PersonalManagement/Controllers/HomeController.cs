@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace PersonalManagement.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         static HttpClient client = new HttpClient();
@@ -38,7 +39,7 @@ namespace PersonalManagement.Controllers
                     string res = await response.Content.ReadAsStringAsync();
                     var htmlDoc = new HtmlDocument();
                     htmlDoc.LoadHtml(res);
-                    HtmlNode tbl = htmlDoc.GetElementbyId("main_table_countries");
+                    HtmlNode tbl = htmlDoc.DocumentNode.SelectSingleNode("//table");
                     HtmlNode tbody = tbl.SelectSingleNode("//tbody");
                     HtmlNodeCollection trColl = tbody.SelectNodes("tr");
                     coronaTbl = HtmlNode.CreateNode("<table></table>");

@@ -44,6 +44,7 @@
 
 
 @model PersonalManagement.Models.RegisterViewModel
+@using PersonalManagement.Models
 @{
     ViewBag.Title = "Đăng ký";
     Layout = "~/Views/Shared/_LayoutPageAccount.cshtml";
@@ -59,7 +60,7 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Tạo một tài khoản!</h1>
                     </div>
-                    @using ( Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "user" }) )
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "user" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true, "", new { @class = "error" })
@@ -98,19 +99,21 @@
                             Đăng ký tài khoản
                         </button>
                         <hr>
-                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                            <i class="fab fa-google fa-fw"></i> Đăng ký với Google
-                        </a>
-                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                            <i class="fab fa-facebook-f fa-fw"></i> Đăng ký với Facebook
-                        </a>
+                        
                     }
+                    <div>
+                        <section id="socialLoginForm">
+                            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                        </section>
+                    </div>
                     <hr>
                     <div class="text-center">
-                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                        @Html.ActionLink("Quên mật khẩu?", "ForgotPassword", new { @class = "small" })
+
                     </div>
                     <div class="text-center">
-                        <a class="small" href="login.html">Already have an account? Login!</a>
+                        <a class="small" href="@Url.Action("login", "account")">Đã có tài khoản? Đăng nhập!</a>
+
                     </div>
                 </div>
             </div>

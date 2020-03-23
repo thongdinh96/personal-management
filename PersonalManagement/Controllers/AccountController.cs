@@ -203,18 +203,25 @@ namespace PersonalManagement.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
+                bool checkPass = await UserManager.HasPasswordAsync(user.Id);
+                if (!checkPass)
+                {
+                    ViewBag.Msg = "Email này được đăng ký từ tài khoản bên thứ 3, không thể sử dụng chức năng này";
+                    return View("ForgotPasswordConfirmation");
+                }
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
+                    ViewBag.Msg = "Bạn chưa xác thực email, vui lòng xác thực email trước khi sử dụng chức năng này";
                     return View("ForgotPasswordConfirmation");
                 }
-
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Khôi phục mật khẩu", "Khôi phục mật khẩu của bạn bằng cách click vào <a href=\"" + callbackUrl + "\">đây</a>");
+                ViewBag.Msg = "Một email khôi phục mật khẩu đã được gửi đến hộp thư của bạn, vui lòng kiểm tra!";
+                return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
@@ -329,6 +336,23 @@ namespace PersonalManagement.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login
+            var checkUser= UserManager.FindByEmailAsync(loginInfo.Email);
+            if (checkUser.Result==null)
+            {
+                var user = new ApplicationUser { Email = loginInfo.Email, UserName = loginInfo.Email };
+                var result1 = await UserManager.CreateAsync(user);
+                if (!result1.Succeeded)
+                {
+                    return RedirectToAction("Login");
+
+                }
+                result1 = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                if (!result1.Succeeded)
+                {
+                    return RedirectToAction("Login");
+
+                }
+            }
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -337,13 +361,14 @@ namespace PersonalManagement.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
                 default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                //case SignInStatus.Failure:
+                //default:
+                //    // If the user does not have an account, then prompt the user to create an account
+                //    ViewBag.ReturnUrl = returnUrl;
+                //    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                //    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
