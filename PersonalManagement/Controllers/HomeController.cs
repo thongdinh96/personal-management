@@ -21,12 +21,12 @@ namespace PersonalManagement.Controllers
         static HttpClient client = new HttpClient();
         public async Task<ActionResult> Index()
         {
-            var sim=HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            if ( sim!=null )
+            var sim = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            if (sim != null)
             {
-                var userName=User.Identity.Name;
-                var usr=await sim.FindByNameAsync(userName);
-                Session["EmailConfirmed"] = usr?.EmailConfirmed; 
+                var userName = User.Identity.Name;
+                var usr = await sim.FindByNameAsync(userName);
+                Session["EmailConfirmed"] = usr?.EmailConfirmed;
             }
             try
             {

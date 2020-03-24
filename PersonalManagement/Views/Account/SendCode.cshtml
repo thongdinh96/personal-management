@@ -6,7 +6,7 @@
 @using (Html.BeginForm("SendCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
     @Html.AntiForgeryToken()
     @Html.Hidden("rememberMe", @Model.RememberMe)
-    <h4>Gửi mã xác thực</h4>
+    <h4 class="mt-4">Gửi mã xác thực</h4>
     <hr />
     <div class="row">
         <div class="col-md-8">

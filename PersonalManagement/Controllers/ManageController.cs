@@ -98,6 +98,11 @@ namespace PersonalManagement.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
+        public ActionResult Profile()
+        {
+            return View();
+        }
+
         //
         // GET: /Manage/AddPhoneNumber
         public ActionResult AddPhoneNumber()
@@ -281,7 +286,7 @@ namespace PersonalManagement.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.Error ? "Có lỗi xảy ra"
                 : "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
