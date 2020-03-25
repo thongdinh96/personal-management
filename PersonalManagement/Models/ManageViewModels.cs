@@ -78,6 +78,11 @@ namespace PersonalManagement.Models
         public string PhoneNumber { get; set; }
     }
 
+    public class ProfileViewModel
+    {
+        public string AvaUrl { get; set; }
+    }
+
     public class ConfigureTwoFactorViewModel
     {
         public string SelectedProvider { get; set; }

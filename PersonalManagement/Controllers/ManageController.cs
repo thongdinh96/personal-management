@@ -100,7 +100,12 @@ namespace PersonalManagement.Controllers
 
         public ActionResult Profile()
         {
-            return View();
+            var usr = UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var model = new ProfileViewModel
+            {
+                AvaUrl = usr.Result.AvarUrl
+            };
+            return View(model);
         }
 
         //

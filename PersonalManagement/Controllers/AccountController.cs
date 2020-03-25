@@ -150,7 +150,7 @@ namespace PersonalManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, AvarUrl = "~/Images/iconfinder_unknown_403017.png" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -339,7 +339,7 @@ namespace PersonalManagement.Controllers
             var checkUser= UserManager.FindByEmailAsync(loginInfo.Email);
             if (checkUser.Result==null)
             {
-                var user = new ApplicationUser { Email = loginInfo.Email, UserName = loginInfo.Email };
+                var user = new ApplicationUser { Email = loginInfo.Email, UserName = loginInfo.Email, AvarUrl = "" };
                 var result1 = await UserManager.CreateAsync(user);
                 if (!result1.Succeeded)
                 {
