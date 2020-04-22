@@ -201,6 +201,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="BL\DataService.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -212,10 +213,27 @@
     <Compile Include="Migrations\202003231659433_UrlAvar.designer.cs">
       <DependentUpon>202003231659433_UrlAvar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003261622212_AddJobTitleCol.cs" />
+    <Compile Include="Migrations\202003261622212_AddJobTitleCol.designer.cs">
+      <DependentUpon>202003261622212_AddJobTitleCol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004211506116_AddSkill.cs" />
+    <Compile Include="Migrations\202004211506116_AddSkill.designer.cs">
+      <DependentUpon>202004211506116_AddSkill.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004211513465_RenameSkillID.cs" />
+    <Compile Include="Migrations\202004211513465_RenameSkillID.designer.cs">
+      <DependentUpon>202004211513465_RenameSkillID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004221622446_AddWorkLinkColumn.cs" />
+    <Compile Include="Migrations\202004221622446_AddWorkLinkColumn.designer.cs">
+      <DependentUpon>202004221622446_AddWorkLinkColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Skill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -437,6 +455,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202003231659433_UrlAvar.resx">
       <DependentUpon>202003231659433_UrlAvar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261622212_AddJobTitleCol.resx">
+      <DependentUpon>202003261622212_AddJobTitleCol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004211506116_AddSkill.resx">
+      <DependentUpon>202004211506116_AddSkill.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004211513465_RenameSkillID.resx">
+      <DependentUpon>202004211513465_RenameSkillID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004221622446_AddWorkLinkColumn.resx">
+      <DependentUpon>202004221622446_AddWorkLinkColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

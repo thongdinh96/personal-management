@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using PersonalManagement.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using PersonalManagement.Models;
 
 namespace PersonalManagement.Controllers
 {
@@ -32,9 +34,9 @@ namespace PersonalManagement.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -98,13 +100,55 @@ namespace PersonalManagement.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
-        public ActionResult Profile()
+        public ActionResult Profile(ManageMessageId? message)
         {
-            var usr = UserManager.FindByIdAsync(User.Identity.GetUserId());
+            ViewBag.StatusMessage =
+                message == ManageMessageId.UpdateProfileSuccess ? "Cập nhật hồ sơ thành công"
+                : "";
+            ApplicationUser usrRes = default;
+            using (var ctx = new ApplicationDbContext())
+            {
+                usrRes = ctx.Users.Find(User.Identity.GetUserId());
+                ctx.Entry(usrRes).Collection(au => au.Skills).Load();
+            }
             var model = new ProfileViewModel
             {
-                AvaUrl = usr.Result.AvarUrl
+                AvaUrl = usrRes.AvarUrl,
+                Name = usrRes.FirstName + usrRes.LastName,
+                JobTitle = usrRes.JobTitle,
+                Skills = usrRes.Skills,
+                WorkLink=usrRes.WorkLink
             };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Profile(ProfileViewModel model, HttpPostedFileBase file)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var userID = User.Identity.GetUserId();
+                    var user = ctx.Users.Where(usr => usr.Id == userID).SingleOrDefault();
+                    if (file!=null)
+                    {
+                        file.SaveAs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", file.FileName));
+                        user.AvarUrl = "/Images/" + file.FileName; 
+                    }
+                    List<string> nameArr = model.Name.Split(' ').ToList();
+                    user.FirstName = nameArr[0];
+                    nameArr.RemoveAt(0);
+                    user.LastName = string.Join(" ", nameArr);
+                    user.JobTitle = model.JobTitle;
+                    user.WorkLink = model.WorkLink;
+                    ctx.SaveChanges();
+                }
+                return RedirectToAction("profile", new { Message = ManageMessageId.UpdateProfileSuccess });
+            }
+
             return View(model);
         }
 
@@ -342,7 +386,7 @@ namespace PersonalManagement.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -390,9 +434,10 @@ namespace PersonalManagement.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            UpdateProfileSuccess,
             Error
         }
 
-#endregion
+        #endregion
     }
 }

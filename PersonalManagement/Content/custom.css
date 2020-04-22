@@ -32,7 +32,7 @@
 
     .profile-img img {
         width: 70%;
-        height: 100%;
+        height: 70%;
     }
 
     .profile-img .file {
@@ -62,13 +62,13 @@
 }
 
 .profile-edit-btn {
-    border: none;
+    /*border: none;
     border-radius: 1.5rem;
     width: 70%;
     padding: 2%;
     font-weight: 600;
-    color: #6c757d;
-    cursor: pointer;
+    color: whitesmoke;
+    cursor: pointer;*/
 }
 
 .proile-rating {
@@ -127,4 +127,9 @@
 .profile-tab p {
     font-weight: 600;
     color: #0062cc;
+}
+
+.skill-name {
+    font-size: small;
+    color: gray
 }

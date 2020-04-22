@@ -81,6 +81,10 @@ namespace PersonalManagement.Models
     public class ProfileViewModel
     {
         public string AvaUrl { get; set; }
+        public string Name { get; set; }
+        public string JobTitle { get; set; }
+        public string WorkLink { get; set; }
+        public ICollection<Skill> Skills { get; set; }
     }
 
     public class ConfigureTwoFactorViewModel

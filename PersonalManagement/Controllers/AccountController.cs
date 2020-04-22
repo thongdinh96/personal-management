@@ -21,7 +21,7 @@ namespace PersonalManagement.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            UserManager = userManager;            
+            UserManager = userManager;
             SignInManager = signInManager;
         }
 
@@ -150,7 +150,7 @@ namespace PersonalManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, AvarUrl = "~/Images/iconfinder_unknown_403017.png" };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, AvarUrl = "Images/iconfinder_unknown_403017.png" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

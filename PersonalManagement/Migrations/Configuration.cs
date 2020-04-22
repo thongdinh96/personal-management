@@ -1,6 +1,8 @@
 ﻿namespace PersonalManagement.Migrations
 {
+    using PersonalManagement.Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -9,7 +11,7 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(PersonalManagement.Models.ApplicationDbContext context)
@@ -18,6 +20,23 @@
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
+            var skills = new List<Skill>()
+            {
+                new Skill()
+                {
+                    SkillName="C#"
+                },
+                new Skill()
+                {
+                    SkillName=".NET"
+                },
+                new Skill()
+                {
+                    SkillName="ASP.NET MVC"
+                }
+            };
+            skills.ForEach(s => context.Skills.AddOrUpdate(p => p.SkillName, s));
+            context.SaveChanges();
         }
     }
 }
