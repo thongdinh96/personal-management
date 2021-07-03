@@ -2,7 +2,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@using PersonalManagement.Models;
 <style>
     .hover-item:hover .edit-btn {
         display: inline
@@ -83,7 +83,8 @@
                         </div>
                     </div>
                     <div class="proile-rating hover-item">
-                        XẾP HẠNG : <span id="rank">8/10</span>
+                        XẾP HẠNG : <span id="rank">@Model.Rank/10</span>
+                        @Html.HiddenFor(m => m.Rank, new { @readonly = "readonly", @id = "rankHd" })
                         <i id="rankEdit" class="fas fa-edit edit-btn" title="Click để sửa xếp hạng" data-toggle="modal" data-target="#rankModel"></i>
                         <div class="modal fade" id="rankModel" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -97,7 +98,7 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label for="rankIp" class="col-form-label">Chọn xếp hạng mới:</label>
-                                            <input type="number" class="form-control" id="rankIp">
+                                            <input type="number" class="form-control" id="rankIp" min="1" max="10">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -151,7 +152,32 @@
                             </div>
                         </div>
                     </div>
-                    <p>KĨ NĂNG</p>
+                    <div class="hover-item" style="margin-top: 24px; margin-bottom: 16px">
+                        <span style="font-size: 12px; color: #818182">KĨ NĂNG</span>
+                        <i id="skillsEdit" class="fas fa-edit edit-btn" title="Click để sửa skill" data-toggle="modal" data-target="#skillsModel"></i>
+                        <div class="modal fade" id="skillsModel" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Chỉnh sửa skill</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="workLinkIp" class="col-form-label">Sửa các skill:</label>
+                                            <input id="skillsIp" type="text" data-role="tagsinput">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                        <button type="button" class="btn btn-primary" id="workLinkSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     @foreach (var skill in Model.Skills)
                     {
                         <div class="skill-name">@skill.SkillName</div>
@@ -163,26 +189,10 @@
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-6">
-                                <label>User Id</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Kshiti123</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Name</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Kshiti Ghelani</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
                                 <label>Email</label>
                             </div>
                             <div class="col-md-6">
-                                <p>kshitighelani@gmail.com</p>
+                                <p>@Html.DisplayTextFor(pm => pm.Email)</p>
                             </div>
                         </div>
                         <div class="row">
@@ -190,63 +200,201 @@
                                 <label>Phone</label>
                             </div>
                             <div class="col-md-6">
-                                <p>123 456 7890</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Profession</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Web Developer and Designer</p>
+                                <p>@Html.DisplayTextFor(pm => pm.Phone)</p>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Experience</label>
+                                <label class="col-form-label">Kinh nghiệm</label>
                             </div>
+                            <div class="col-md-6 hover-item">
+                                <span id="exper" class="profile-detail">@Model.ExperEnum</span>
+                                @Html.HiddenFor(pvm => pvm.ExperEnum, new { id = "experHd", @Value = (int)Model.ExperEnum })
+                                <i id="experEdit" class="fas fa-edit edit-btn" title="Click để sửa kinh nghiệm" data-toggle="modal" data-target="#experModel"></i>
+                                <div class="modal fade" id="experModel" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chỉnh sửa kinh nghiệm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    @Html.DropDownList("experDdl",
+                                                            EnumHelper.GetSelectList(typeof(ExperEnum)), "Chọn kinh nghiệm", new { @class = "form-control", @id = "experDdl" })
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                                <button type="button" class="btn btn-primary" id="experSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
-                                <p>Expert</p>
+                                <label class="col-form-label">Tiền công theo giờ</label>
+                            </div>
+                            <div class="col-md-6 hover-item">
+                                <span id="hRate" class="profile-detail">@Model.HourlyRate$/giờ</span>
+                                @Html.HiddenFor(pvm => pvm.HourlyRate, new { id = "hRateHd" })
+                                <i id="hRateEdit" class="fas fa-edit edit-btn" title="Click để sửa tiền công theo giờ" data-toggle="modal" data-target="#hRateModel"></i>
+                                <div class="modal fade" id="hRateModel" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chỉnh sửa tiền công theo giờ</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <input type="number" class="form-control" id="hRateIp">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                                <button type="button" class="btn btn-primary" id="hRateSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Hourly Rate</label>
+                                <label class="col-form-label">Số dự án đã tham gia</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>10$/hr</p>
+                            <div class="col-md-6 hover-item">
+                                <span id="ttProjects" class="profile-detail">@Html.DisplayTextFor(pvm => pvm.TotalProjects)</span>
+                                @Html.HiddenFor(pvm => pvm.TotalProjects, new { id = "ttProjectsHd" })
+                                <i id="ttProjectsEdit" class="fas fa-edit edit-btn" title="Click để sửa số dự án đã tham gia" data-toggle="modal" data-target="#ttProjectsModel"></i>
+                                <div class="modal fade" id="ttProjectsModel" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chỉnh sửa số dự án đã tham gia</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <input type="number" class="form-control" id="ttProjectsIp" min="1">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                                <button type="button" class="btn btn-primary" id="ttProjectsSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Total Projects</label>
+                                <label class="col-form-label">English Level</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>230</p>
+                            <div class="col-md-6 hover-item">
+                                <span id="engLvl" class="profile-detail">@Model.EnglishLevel</span>
+                                @Html.HiddenFor(pvm => pvm.EnglishLevel, new { id = "engLvlHd", @Value = (int)Model.EnglishLevel })
+                                <i id="engLvlEdit" class="fas fa-edit edit-btn" title="Click để sửa trình độ tiếng Anh" data-toggle="modal" data-target="#engLvlModel"></i>
+                                <div class="modal fade" id="engLvlModel" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chỉnh sửa trình độ tiếng Anh</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    @Html.DropDownList("engLvlDdl",
+                                                            EnumHelper.GetSelectList(typeof(EnglishLevel)), "Chọn trình độ tiếng Anh", new { @class = "form-control", @id = "engLvlDdl" })
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                                <button type="button" class="btn btn-primary" id="engLvlSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>English Level</label>
+                                <label class="col-form-label">Khả dụng</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>Expert</p>
+                            <div class="col-md-6 hover-item">
+                                <span id="available" class="profile-detail">@Html.DisplayTextFor(pvm => pvm.Availability)</span>
+                                @Html.HiddenFor(pvm => pvm.Availability, new { id = "availableHd" })
+                                <i id="availableEdit" class="fas fa-edit edit-btn" title="Click để sửa tiền công theo giờ" data-toggle="modal" data-target="#availableModel"></i>
+                                <div class="modal fade" id="availableModel" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chỉnh sửa thời gian khả dụng</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body row">
+                                                <div class="form-group col-md-6">
+                                                    <input type="number" class="form-control" id="availableIp" min="1">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <select id="availableDdl" class="form-control">
+                                                        <option value="month">tháng</option>
+                                                        <option value="year">năm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                                <button type="button" class="btn btn-primary" id="availableSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <label>Availability</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>6 months</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Your Bio</label><br />
-                                <p>Your detail description</p>
+                            <div class="col-md-12 hover-item">
+                                <label for="bioEdit" class="col-form-label">Tiểu sử của bạn</label>
+                                <i id="bioEdit" class="fas fa-edit edit-btn" title="Click để sửa tiểu sử" data-toggle="modal" data-target="#bioModel"></i>
+                                <div class="modal fade" id="bioModel" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chỉnh sửa tiểu sử</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <textarea id="bioIp" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng <i class="fas fa-ban"></i></button>
+                                                <button type="button" class="btn btn-primary" id="bioSave" data-dismiss="modal">Lưu <i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><br />
+                                <p id="bio">@Html.DisplayTextFor(pvm=>pvm.Bio)</p>
+                                @Html.HiddenFor(pvm=>pvm.Bio, new { @id="bioHd" })
                             </div>
                         </div>
                     </div>
@@ -282,9 +430,7 @@
     }
 
     $(function () {
-        setTimeout(function () {
-            $('#msgAlert').fadeOut();
-        }, 3000);
+        
         $('#upload').on('change', function () {
             readURL(input);
         });
@@ -302,6 +448,12 @@
         $(document).on("click", "#workLinkEdit", function () {
             $("#workLinkIp").val($("#workLink").attr("href"));
         });
+        $(document).on("click", "#skillsEdit", function () {
+            $(".skill-name").each(function (index) {
+                $('#skillsIp').tagsinput('add', { "value": index+1, "text": $(this).text() });
+            });
+            document.getElementById("skillsIp").value = skills;
+        });
         $('#jobModel').on('click', '#jobSave', function (e) {
             $("#job").text($("#jobIp").val());
             $("#jobHd").val($("#jobIp").val());
@@ -311,9 +463,74 @@
         });
         $('#rankModel').on('click', '#rankSave', function (e) {
             $("#rank").text($("#rankIp").val() + '/10');
+            $("#rankHd").val($("#rankIp").val())
         });
         $(document).on("click", "#rankEdit", function () {
             $("#rankIp").val($("#rank").text().substr(0, $("#rank").text().indexOf("/")));
+        });
+        $('#experModel').on('click', '#experSave', function (e) {
+            if ($("#experDdl").val() === "") {
+                $("#exper").text("");
+            } else {
+                $("#exper").text($("#experDdl option:selected").text());
+
+            }
+            $("#experHd").val($("#experDdl").val())
+        });
+        $(document).on("click", "#experEdit", function () {
+            $("#experDdl").val($("#experHd").val());
+
+        });
+        $('#hRateModel').on('click', '#hRateSave', function (e) {
+            $("#hRate").text($("#hRateIp").val() + '$/giờ');
+            $("#hRateHd").val($("#hRateIp").val())
+        });
+        $(document).on("click", "#hRateEdit", function () {
+            $("#hRateIp").val($("#hRateHd").val());
+        });
+        $('#ttProjectsModel').on('click', '#ttProjectsSave', function (e) {
+            $("#ttProjects").text($("#ttProjectsIp").val());
+            $("#ttProjectsHd").val($("#ttProjectsIp").val())
+        });
+        $(document).on("click", "#ttProjectsEdit", function () {
+            $("#ttProjectsIp").val($("#ttProjectsHd").val());
+        });
+        $('#engLvlModel').on('click', '#engLvlSave', function (e) {
+            if ($("#engLvlDdl").val() === "") {
+                $("#engLvl").text("");
+            } else {
+                $("#engLvl").text($("#engLvlDdl option:selected").text());
+
+            }
+            $("#engLvlHd").val($("#engLvlDdl").val())
+        });
+        $(document).on("click", "#engLvlEdit", function () {
+            $("#engLvlDdl").val($("#engLvlHd").val());
+
+        });
+        $('#availableModel').on('click', '#availableSave', function (e) {
+            $("#available").text($("#availableIp").val() +' '+ $("#availableDdl option:selected").text());
+            $("#availableHd").val($("#availableIp").val() + ' ' +$("#availableDdl option:selected").text());
+        });
+        $(document).on("click", "#availableEdit", function () {
+
+            var avaiArr = $("#availableHd").val().split(" ")
+            $("#availableIp").val(avaiArr[0]);
+            if (avaiArr[1] === 'tháng') {
+                $("#availableDdl").val("month")
+            } else {
+                $("#availableDdl").val("year")
+
+            }
+            
+        });
+        $('#bioModel').on('click', '#bioSave', function (e) {
+            $("#bio").text($("#bioIp").val());
+            $("#bioHd").val($("#bioIp").val());
+        });
+        $(document).on("click", "#bioEdit", function () {
+            $("#bioIp").val($("#bioHd").val());
+            
         });
     });
 </script>

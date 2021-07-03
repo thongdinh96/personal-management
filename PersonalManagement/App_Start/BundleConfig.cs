@@ -23,8 +23,10 @@ namespace PersonalManagement
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/all.min.css",
+                      "~/Content/sb-admin-2.min.css",
+                      "~/Content/custom.css",
+                      "~/Content/tagsinput.css"));
         }
     }
 }

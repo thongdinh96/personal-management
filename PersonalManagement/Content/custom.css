@@ -133,3 +133,8 @@
     font-size: small;
     color: gray
 }
+
+.profile-detail {
+    color: #0062cc;
+    font-weight: 600
+}

@@ -1,4 +1,9 @@
-﻿@using Microsoft.AspNet.Identity;
+﻿<style>
+    .alert-item:hover {
+        background-color: darkgray
+    }
+</style>
+@using Microsoft.AspNet.Identity;
 @*@if (Request.IsAuthenticated)
     {
         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -21,10 +26,15 @@
         </ul>
     }*@
 @*@{
-    var avatar = ((ClaimsIdentity)User.Identity).FindFirst("AvarUrl");
-}*@
+        var avatar = ((ClaimsIdentity)User.Identity).FindFirst("AvarUrl");
+    }*@
 
 <!-- Topbar -->
+@using PersonalManagement.Models;
+@{
+    var avm = ViewBag.AVM as IEnumerable<AlertViewModel>;
+    int countNotRead = (int)ViewBag.CountNotRead;
+}
 <nav class="navbar navbar-expand navbar-dark bg-dark topbar static-top shadow mb-4">
 
     <!-- Sidebar Toggle (Topbar) -->
@@ -77,47 +87,56 @@
                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bell fa-fw"></i>
                     <!-- Counter - Alerts -->
-                    <span class="badge badge-danger badge-counter">3+</span>
+                    @if (countNotRead != 0)
+                    {
+                        <span class="badge badge-danger badge-counter">@countNotRead</span>
+
+                    }
                 </a>
                 <!-- Dropdown - Alerts -->
                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                     <h6 class="dropdown-header">
-                        Alerts Center
+                        Trung tâm thông báo
                     </h6>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
+                    @if (avm == null || avm.Count() == 0)
+                    {
+                        <div class="dropdown-item d-flex align-items-center">
+                            <span class="font-weight-bold">Không có thông báo</span>
+                        </div>
+                    }
+                    else
+                    {
+                        int length = 0;
+
+                        if (avm.Count() < Constant.ALERT_TEASER)
+                        {
+                            length = avm.Count();
+                        }
+                        else
+                        {
+                            length = Constant.ALERT_TEASER;
+                        }
+
+                        for (int i = 0; i < length; i++)
+                        {
+                            <div class="dropdown-item d-flex align-items-center alert-item" href="#">
+                                <div>
+                                    <div class="small text-gray-900">@avm.ElementAt(i).Date</div>
+                                    @if (avm.ElementAt(i).IsRead)
+                                    {
+                                        <span class="font-weight-normal">@avm.ElementAt(i).Message</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span class="font-weight-bold">@avm.ElementAt(i).Message</span>
+
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 12, 2019</div>
-                            <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-success">
-                                <i class="fas fa-donate text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 7, 2019</div>
-                            $290.29 has been deposited into your account!
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-warning">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 2, 2019</div>
-                            Spending Alert: We've noticed unusually high spending for your account.
-                        </div>
-                    </a>
-                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                        }
+                        @Html.ActionLink("Xem tất cả thông báo", "AlertCenter", "home", null, new { @class = "dropdown-item text-center small text-gray-900" })
+                    }
                 </div>
             </li>
 

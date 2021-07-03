@@ -15,12 +15,6 @@ namespace PersonalManagement
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //var sim=Request.GetOwinContext().Get<ApplicationUserManager>("ASP.NET Identity");
-            //var sim=HttpContext.Current.GetOwinContext().Get<ApplicationUserManager>("ASP.NET Identity");
-            //var user=await sim.FindByIdAsync(User.Identity.Name);
-
-            //Session["EmailConfirmed"] = user.EmailConfirmed;
-
         }
         void Application_PreSendRequestHeaders( Object sender, EventArgs e )
         {

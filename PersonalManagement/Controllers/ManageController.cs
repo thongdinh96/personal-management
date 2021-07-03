@@ -9,10 +9,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using PersonalManagement.BL;
+using PersonalManagement.Filters;
 namespace PersonalManagement.Controllers
 {
     [Authorize]
+    [HeaderFilter]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -117,7 +119,16 @@ namespace PersonalManagement.Controllers
                 Name = usrRes.FirstName + usrRes.LastName,
                 JobTitle = usrRes.JobTitle,
                 Skills = usrRes.Skills,
-                WorkLink=usrRes.WorkLink
+                WorkLink=usrRes.WorkLink,
+                Email=usrRes.Email,
+                Phone=usrRes.PhoneNumber==null?string.Empty:usrRes.PhoneNumber,
+                Rank=usrRes.Rank,
+                ExperEnum=usrRes.ExperEnum,
+                HourlyRate=usrRes.HourlyRate,
+                TotalProjects=usrRes.TotalProjects,
+                Availability=usrRes.Availability,
+                EnglishLevel=usrRes.EnglishLevel,
+                Bio=usrRes.Bio
             };
             return View(model);
         }
@@ -144,6 +155,13 @@ namespace PersonalManagement.Controllers
                     user.LastName = string.Join(" ", nameArr);
                     user.JobTitle = model.JobTitle;
                     user.WorkLink = model.WorkLink;
+                    user.Rank = model.Rank;
+                    user.ExperEnum = model.ExperEnum;
+                    user.HourlyRate = model.HourlyRate;
+                    user.TotalProjects = model.TotalProjects;
+                    user.Availability = model.Availability;
+                    user.EnglishLevel = model.EnglishLevel;
+                    user.Bio = model.Bio;
                     ctx.SaveChanges();
                 }
                 return RedirectToAction("profile", new { Message = ManageMessageId.UpdateProfileSuccess });
@@ -235,6 +253,7 @@ namespace PersonalManagement.Controllers
             var result = await UserManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
             if (result.Succeeded)
             {
+                Utils.AddUserActitivy(User.Identity.GetUserId(), "Bạn đã thêm số điện thoại");
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
@@ -263,6 +282,7 @@ namespace PersonalManagement.Controllers
             {
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
             }
+            Utils.AddUserActitivy(User.Identity.GetUserId(), "Bạn đã xóa số điện thoại");
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
@@ -286,6 +306,7 @@ namespace PersonalManagement.Controllers
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
+                Utils.AddUserActitivy(User.Identity.GetUserId(), "Bạn đã thay đổi mật khẩu");
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {

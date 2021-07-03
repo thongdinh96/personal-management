@@ -202,9 +202,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="BL\DataService.cs" />
+    <Compile Include="BL\Utils.cs" />
+    <Compile Include="Constant.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Filters\HeaderFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -229,11 +232,37 @@
     <Compile Include="Migrations\202004221622446_AddWorkLinkColumn.designer.cs">
       <DependentUpon>202004221622446_AddWorkLinkColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004260015037_AddProfileFields.cs" />
+    <Compile Include="Migrations\202004260015037_AddProfileFields.designer.cs">
+      <DependentUpon>202004260015037_AddProfileFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004280135196_AddTableUserActivity.cs" />
+    <Compile Include="Migrations\202004280135196_AddTableUserActivity.designer.cs">
+      <DependentUpon>202004280135196_AddTableUserActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004280300294_EditKeyOnUA.cs" />
+    <Compile Include="Migrations\202004280300294_EditKeyOnUA.designer.cs">
+      <DependentUpon>202004280300294_EditKeyOnUA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004281614599_AddIsReadColumn.cs" />
+    <Compile Include="Migrations\202004281614599_AddIsReadColumn.designer.cs">
+      <DependentUpon>202004281614599_AddIsReadColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004290644157_AddTableGoalCategoryFamousTalk.cs" />
+    <Compile Include="Migrations\202004290644157_AddTableGoalCategoryFamousTalk.designer.cs">
+      <DependentUpon>202004290644157_AddTableGoalCategoryFamousTalk.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\FamousTalk.cs" />
+    <Compile Include="Models\Goal.cs" />
+    <Compile Include="Models\GoalsViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Skill.cs" />
+    <Compile Include="Models\UserActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -247,13 +276,16 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\sb-admin-2.min.css" />
+    <Content Include="Content\tagsinput.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap-tagsinput.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\custom-all.js" />
     <Content Include="Scripts\custom-youtube.js" />
     <Content Include="Scripts\custom-index.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
@@ -345,6 +377,7 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\tagsinput.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -424,6 +457,11 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Manage\Profile.cshtml" />
+    <Content Include="Views\Home\AlertCenter.cshtml" />
+    <Content Include="Views\Home\GoalManagement.cshtml" />
+    <Content Include="Views\Home\FamousTalk.cshtml" />
+    <Content Include="Views\Home\UsefulKnowledge.cshtml" />
+    <Content Include="Views\Home\PsychologicalTips.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -467,6 +505,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004221622446_AddWorkLinkColumn.resx">
       <DependentUpon>202004221622446_AddWorkLinkColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004260015037_AddProfileFields.resx">
+      <DependentUpon>202004260015037_AddProfileFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004280135196_AddTableUserActivity.resx">
+      <DependentUpon>202004280135196_AddTableUserActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004280300294_EditKeyOnUA.resx">
+      <DependentUpon>202004280300294_EditKeyOnUA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004281614599_AddIsReadColumn.resx">
+      <DependentUpon>202004281614599_AddIsReadColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004290644157_AddTableGoalCategoryFamousTalk.resx">
+      <DependentUpon>202004290644157_AddTableGoalCategoryFamousTalk.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

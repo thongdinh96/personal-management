@@ -1,0 +1,150 @@
+﻿<style>
+    .dropdown-item:hover {
+        background-color: lightgray
+    }
+</style>
+@{
+    ViewBag.Title = "Quản trị mục tiêu";
+    int col = 0;
+    int row = 0;
+}
+@using PersonalManagement.Models;
+@model IEnumerable<GoalsViewModel>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewBag.Title</h1>
+</div>
+<div>
+    <a href="#">Quản lí danh mục</a>
+</div>
+<hr />
+<div>
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addGoalModal">Thêm mục tiêu</button>
+    <div class="modal fade" id="addGoalModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="headerModal">Thêm mới mục tiêu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("GoalManagementCreate", "Home"))
+                {
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="goalName" class="col-form-label">Tên mục tiêu</label>
+                            <input name="goalName" type="text" class="form-control" id="goalName">
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate" class="col-form-label">Ngày bắt đầu</label>
+                            <input name="startDate" type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate" class="col-form-label">Ngày kết thúc</label>
+                            <input name="endDate" type="date" class="form-control" id="endDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate" class="col-form-label">Danh mục</label>
+                            <select name="ddlCategory" class="form-control" id="ddlCategory"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Tạo</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <h2 class="h4 mb-0 text-gray-900 mt-3">Danh sách mục tiêu</h2>
+    @foreach (GoalsViewModel g in Model)
+    {
+        <div>
+            <h3 class="h5 mb-0 text-gray-900 mt-3">@g.Category</h3>
+            @if (g.Goals.Count() <= Constant.ROW_GOAL_ITEM)
+            {
+                col = 12 / g.Goals.Count();
+                <div class="row card-deck mt-3">
+                    @foreach (Goal item in g.Goals)
+                    {
+                        <div class="col-md-@col card shadow mb-4 border-primary">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header border-primary py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">@item.Name</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-800"></i>
+                                    </a>
+                                    <div class="border-dark dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
+                                        <div class="dropdown-header text-dark">Hành động</div>
+                                        <a class="dropdown-item" href="#">Sửa mục tiêu</a>
+                                        <a class="dropdown-item" href="#">Xóa mục tiêu</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <p><b>Ngày bắt đầu:</b> @item.StartDate.ToString("dd/MM/yyyy")</p>
+                                <p><b>Ngày kết thúc:</b> @item.EndDate.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                row = g.Goals.Count() / Constant.ROW_GOAL_ITEM + 1;
+                col = 12 / Constant.ROW_GOAL_ITEM;
+                int start = 0;
+                int length = 0;
+                for (int i = 0; i < row; i++)
+                {
+                    <div class="row card-deck mt-3">
+                        @if (i == row - 1)
+                        {
+                            length = g.Goals.Count() % Constant.ROW_GOAL_ITEM;
+                        }
+                        else
+                        {
+                            length = Constant.ROW_GOAL_ITEM;
+                        }
+                        @for (int j = start; j < start + length; j++)
+                        {
+                            <div class="col-md-@col card shadow mb-4 border-primary">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">@g.Goals[j]</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
+                                            <div class="dropdown-header">Hành động:</div>
+                                            <a class="dropdown-item" href="#">Sửa mục tiêu</a>
+                                            <a class="dropdown-item" href="#">Xóa mục tiêu</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <p><b>Ngày bắt đầu:</b> @g.Goals[j].StartDate.ToString("dd/MM/yyyy")</p>
+                                    <p><b>Ngày kết thúc:</b> @g.Goals[j].EndDate.ToString("dd/MM/yyyy")</p>
+                                </div>
+                            </div>
+                        }
+                        @{
+                            start += Constant.ROW_GOAL_ITEM;
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+<script>
+    $('#myModal').on('hidden.bs.modal', function (e) {
+        // do something...
+    })
+</script>

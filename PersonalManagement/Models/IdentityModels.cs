@@ -15,6 +15,14 @@ namespace PersonalManagement.Models
         public string AvarUrl { get; set; }
         public string JobTitle { get; set; }
         public string WorkLink { get; set; }
+        public byte Rank { get; set; }
+        public ExperEnum ExperEnum { get; set; }
+        public decimal HourlyRate { get; set; }
+        public int TotalProjects { get; set; }
+        public EnglishLevel EnglishLevel { get; set; }
+        public string Availability { get; set; }
+        public string Bio { get; set; }
+
         public virtual ICollection<Skill> Skills { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -40,5 +48,9 @@ namespace PersonalManagement.Models
         }
 
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<UserActivity> UserActivities { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Goal> Goals { get; set; }
+        public DbSet<FamousTalk> FamousTalks { get; set; }
     }
 }

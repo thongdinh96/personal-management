@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -77,13 +79,46 @@ namespace PersonalManagement.Models
         [Display(Name = "Số điện thoại")]
         public string PhoneNumber { get; set; }
     }
-
+    public enum ExperEnum
+    {
+        [Description("Junior")]
+        Junior,
+        [Description("Senior")]
+        Senior,
+        [Description("Expert")]
+        Expert
+    }
+    public enum EnglishLevel
+    {
+        
+        [Description("Elementary proficiency")]
+        Elementary,
+        [Description("Limited Working proficiency")]
+        LimitedWorking,
+        [Description("Professional Working proficiency")]
+        ProfessionalWorking,
+        [Description("Full Professional proficiency")]
+        FullProfessional,
+        [Description("Native Or Bilingual proficiency")]
+        NativeOrBilingual
+    }
     public class ProfileViewModel
     {
         public string AvaUrl { get; set; }
         public string Name { get; set; }
         public string JobTitle { get; set; }
         public string WorkLink { get; set; }
+        [Range(minimum: 1, maximum: 10)]
+        public byte Rank { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public ExperEnum ExperEnum { get; set; }
+        public decimal HourlyRate { get; set; }
+        public int TotalProjects { get; set; }
+        public EnglishLevel EnglishLevel { get; set; }
+        public string Availability { get; set; }
+        public string Bio { get; set; }
+
         public ICollection<Skill> Skills { get; set; }
     }
 
@@ -91,5 +126,12 @@ namespace PersonalManagement.Models
     {
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+    }
+    public class AlertViewModel
+    {
+        public DateTime Date { get; set; }
+        public string Message { get; set; }
+        public bool IsRead { get; set; }
+        public int Id { get; set; }
     }
 }

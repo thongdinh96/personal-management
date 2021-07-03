@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Tất cả thông báo";
+}
+@using PersonalManagement.Models;
+@{
+    var avm = ViewBag.AVM as IEnumerable<AlertViewModel>;
+}
+<h4>Tất cả thông báo</h4>
+<hr />
+<button class="btn btn-primary btn-sm" id="btnReadAll">Đánh dấu tất cả đã đọc</button>
+<hr />
+<ul class="list-group">
+    @foreach (AlertViewModel item in avm)
+    {
+        <li href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            @Html.Hidden("itemId", item.Id)
+            <div class="d-flex w-100 justify-content-between">
+                @if (item.IsRead)
+                {
+                    <h5 class="mb-1">@item.Message</h5>
+                }
+                else
+                {
+                    <h5 class="mb-1 font-weight-bold">@item.Message</h5>
+
+                }
+                <small>@item.Date</small>
+            </div>
+        </li>
+
+    }
+</ul>
+<script>
+    $(".list-group-item").click(function () {
+        var li = $(this);
+        var msg = $(li.find("h5")[0]);
+        if (!msg.attr("class").includes("font-weight-bold")) {
+            return;
+        }
+        var itemId = li.children(":first").val()
+        $.ajax({
+            method: "POST",
+            url:`/Home/AlertCenter/${itemId}`
+        })
+            .done(function (data) {
+                msg.removeClass("font-weight-bold");
+            });
+    })
+    $(document).on('click', '#btnReadAll', function () {
+        $.ajax({
+            method: "POST",
+            url:'/Home/AlertCenter'
+        })
+            .done(function (data) {
+                $(".list-group-item").each(function () {
+                    var msg = $($(this).find("h5")[0]);
+                    msg.removeClass("font-weight-bold");
+
+                })
+            });
+    })
+</script>

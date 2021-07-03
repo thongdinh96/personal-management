@@ -44,7 +44,7 @@
                     var cardTitle = $("<h5></h5>")
                     cardTitle.attr("class", "card-title").text(sub.snippet.title)
                     var desPara = $($.parseHTML("<p class='card-text'><b>Mô tả:</b></p>"));
-                    desPara.html(desPara.html() + ' ' + sub.snippet.description)
+                    desPara.html(desPara.html() + ' ' + buildDesText(sub.snippet.description))
                     
                     cardBody.append(cardTitle)
                     executeChannel(channelId, cardBody, desPara)
@@ -56,6 +56,22 @@
             },
                 function (err) { console.error("Execute error", err); });
     }
+    const maxLength = 5;
+    function buildDesText(text) {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        var teaser = text.substr(0, maxLength);
+        teaser = '<span class=\'teaser\'>' + teaser + '</span>'
+        var complete = text.substr(maxLength);
+        complete = '<span class=\'complete\'>' + complete + '</span';
+        return teaser + complete + '<span class=\'more\'>show more...</span>';
+    }
+    $(".more").toggle(function () {
+        $(this).text("show less...").siblings(".complete").show();
+    }, function () {
+        $(this).text("show more...").siblings(".complete").hide();
+    });
     function executeChannel(id, cardBody, desPara) {
         console.log(id)
         return gapi.client.youtube.channels.list({
